@@ -1,0 +1,1563 @@
+{
+  "info": {
+    "title": "redact",
+    "description": "Remove sensitive info from a string",
+    "version": "1"
+  },
+  "servers": [
+    {
+      "url": "https://redact.aws.us.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    },
+    {
+      "url": "https://redact.gcp.us.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    },
+    {
+      "url": "https://redact.aws.eu.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    },
+    {
+      "url": "https://redact.gcp.eu.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    }
+  ],
+  "paths": {
+    "/v1/redact": {
+      "post": {
+        "operationId": "redact_post_v1_redact",
+        "summary": "Redact",
+        "description": "Redact sensitive information from provided text.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "docs_anchor": "/v1/redact",
+                "type": "object",
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "config_id": {
+                    "type": "string",
+                    "description": "Config ID. Can be found at the top of the [Redact dashboard](https://console.pangea.cloud/service/redact).",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  },
+                  "text": {
+                    "type": "string",
+                    "example": "My name is Dennis Nedry and my email is you.didnt.say.the.magic.word@gmail.com",
+                    "description": "The text data to redact"
+                  },
+                  "return_result": {
+                    "type": "boolean",
+                    "description": "Setting this value to false will omit the redacted result only returning count"
+                  },
+                  "debug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Setting this value to true will provide a detailed analysis of the redacted data and the rules that caused redaction"
+                  },
+                  "rules": {
+                    "$ref": "#/components/schemas/rules-param"
+                  },
+                  "rulesets": {
+                    "$ref": "#/components/schemas/rulesets-param"
+                  }
+                },
+                "examples": [
+                  {
+                    "text": "My phone number is: 555-555-5555",
+                    "debug": true
+                  }
+                ],
+                "$id": "#/paths/~1v1~1redact/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The redacted text",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "#/paths/~1v1~1redact/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "required": [
+                        "count"
+                      ],
+                      "properties": {
+                        "redacted_text": {
+                          "type": "string",
+                          "description": "The redacted text",
+                          "example": "My phone number is: <PHONE_NUMBER>"
+                        },
+                        "count": {
+                          "type": "integer",
+                          "description": "Number of redactions present in the text"
+                        },
+                        "report": {
+                          "$ref": "#/components/schemas/redact-debug-report"
+                        }
+                      },
+                      "examples": [
+                        {
+                          "redacted_text": "Call Jenny at <PHONE_NUMBER>",
+                          "count": 1
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/redact_structured": {
+      "post": {
+        "operationId": "redact_post_v1_redact_structured",
+        "summary": "Redact structured",
+        "description": "Redact sensitive information from structured data (e.g., JSON).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "docs_anchor": "/v1/redact_structured",
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "config_id": {
+                    "type": "string",
+                    "description": "Config ID. Can be found at the top of the [Redact dashboard](https://console.pangea.cloud/service/redact).",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  },
+                  "data": {
+                    "description": "Structured data to redact"
+                  },
+                  "jsonp": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "JSON path(s) used to identify the specific JSON fields to redact in the structured data. Note: If jsonp parameter is used, the data parameter must be in JSON format."
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "json"
+                    ],
+                    "default": "json",
+                    "description": "The format of the structured data to redact"
+                  },
+                  "return_result": {
+                    "type": "boolean",
+                    "description": "Setting this value to false will omit the redacted result only returning count"
+                  },
+                  "debug": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Setting this value to true will provide a detailed analysis of the redacted data and the rules that caused redaction"
+                  },
+                  "rules": {
+                    "$ref": "#/components/schemas/rules-param"
+                  },
+                  "rulesets": {
+                    "$ref": "#/components/schemas/rulesets-param"
+                  }
+                },
+                "examples": [
+                  {
+                    "data": {
+                      "one": {
+                        "secret": "(555)-555-5555"
+                      },
+                      "two": {
+                        "secret": "CC: 5555555555554444"
+                      },
+                      "three": {
+                        "secret": "baz"
+                      }
+                    },
+                    "jsonp": [
+                      "$.*.secret"
+                    ],
+                    "debug": true
+                  }
+                ],
+                "$id": "#/paths/~1v1~1redact_structured/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The data with redactions in-place",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "#/paths/~1v1~1redact_structured/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "required": [
+                        "count"
+                      ],
+                      "properties": {
+                        "redacted_data": {
+                          "description": "The redacted data"
+                        },
+                        "count": {
+                          "type": "integer",
+                          "description": "Number of redactions present in the data"
+                        },
+                        "report": {
+                          "$ref": "#/components/schemas/redact-debug-report"
+                        }
+                      },
+                      "examples": [
+                        {
+                          "redacted_data": {
+                            "telephone": "<PHONE_NUMBER>",
+                            "ssn": "<US_SSN>"
+                          },
+                          "count": 2
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1beta/config": {
+      "post": {
+        "operationId": "redact_post_v1beta_config",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "$id": "#/paths/~1v1~1config/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Service config if it exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "#/paths/~1v1~1config/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/redact-service-config-result"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        },
+        "x-pangea-ui-schema": {
+          "isConfiguration": true
+        }
+      }
+    },
+    "/v1beta/config/create": {
+      "post": {
+        "operationId": "redact_post_v1beta_config_create",
+        "requestBody": {
+          "description": "Create a redact service config",
+          "content": {
+            "application/json": {
+              "schema": {
+                "docs_anchor": "rulesets",
+                "required": [
+                  "name"
+                ],
+                "$ref": "#/components/schemas/redact-service-config",
+                "not": {
+                  "required": [
+                    "id"
+                  ],
+                  "description": "Creating a config does not accept an ID"
+                },
+                "$id": "#/paths/~1v1~1config~1create/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a redact service config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "#/paths/~1v1~1config~1create/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/redact-service-config"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        },
+        "x-pangea-ui-schema": {
+          "isConfiguration": true
+        }
+      }
+    },
+    "/v1beta/config/update": {
+      "post": {
+        "operationId": "redact_post_v1beta_config_update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "id",
+                  "updated_at"
+                ],
+                "docs_anchor": "rulesets",
+                "$ref": "#/components/schemas/redact-service-config",
+                "$id": "#/paths/~1v1~1config~1update/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Redact service config successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "#/paths/~1v1~1config~1update/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/redact-service-config-result"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        },
+        "x-pangea-ui-schema": {
+          "isConfiguration": true
+        }
+      }
+    },
+    "/v1beta/config/delete": {
+      "post": {
+        "operationId": "redact_post_v1beta_config_delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "docs_anchor": "rulesets",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "$id": "#/paths/~1v1~1config~1delete/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Redact service config successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "#/paths/~1v1~1config~1delete/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "$ref": "#/components/schemas/redact-service-config-result"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        },
+        "x-pangea-ui-schema": {
+          "isConfiguration": true
+        }
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "components": {
+    "schemas": {
+      "pangea-response": {
+        "title": "Response Schema",
+        "description": "Pangea standard response schema",
+        "type": "object",
+        "required": [
+          "request_id",
+          "request_time",
+          "response_time",
+          "status"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "A unique identifier assigned to each request made to the API. It is used to track and identify a specific request and its associated data. The `request_id` can be helpful for troubleshooting, auditing, and tracing the flow of requests within the system. It allows users to reference and retrieve information related to a particular request, such as the response, parameters, and raw data associated with that specific request.\n\n```\n\"request_id\":\"prq_x6fdiizbon6j3bsdvnpmwxsz2aan7fqd\"\n```"
+          },
+          "request_time": {
+            "type": "string",
+            "description": "The timestamp indicates the exact moment when a request is made to the API. It represents the date and time at which the request was initiated by the client. The `request_time` is useful for tracking and analyzing the timing of requests, measuring response times, and monitoring performance metrics. It allows users to determine the duration between the request initiation and the corresponding response, aiding in the assessment of API performance and latency.\n\n```\n\"request_time\":\"2022-09-21T17:24:33.105Z\"\n```"
+          },
+          "response_time": {
+            "type": "string",
+            "description": "Duration it takes for the API to process a request and generate a response. It represents the elapsed time from when the request is received by the API to when the corresponding response is returned to the client.\n\n```\n\"response_time\":\"2022-09-21T17:24:34.007Z\"\n```"
+          },
+          "status": {
+            "type": "string",
+            "description": "It represents the status or outcome of the API request made for IP information. It indicates the current state or condition of the request and provides information on the success or failure of the request.\n\n```\n\"status\":\"success\"\n```"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Provides a concise and brief overview of the purpose or primary objective of the API endpoint. It serves as a high-level summary or description of the functionality or feature offered by the endpoint."
+          },
+          "result": {
+            "type": "object"
+          }
+        },
+        "examples": [
+          {
+            "request_id": "prq_x6fdiizbon6j3bsdvnpmwxsz2aan7fqd",
+            "request_time": "2022-09-21T17:24:33.105Z",
+            "response_time": "2022-09-21T17:24:34.007Z",
+            "status": "success"
+          }
+        ],
+        "$id": "#/components/schemas/pangea-response"
+      },
+      "pangea-validation-errors": {
+        "$ref": "#/components/schemas/pangea-response",
+        "required": [
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "type": "object",
+            "required": [
+              "errors"
+            ],
+            "properties": {
+              "errors": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "code",
+                    "detail",
+                    "source"
+                  ],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "FieldRequired",
+                        "InvalidString",
+                        "InvalidNumber",
+                        "InvalidInteger",
+                        "InvalidObject",
+                        "InvalidArray",
+                        "InvalidNull",
+                        "InvalidBool",
+                        "BadFormat",
+                        "BadFormatPangeaDuration",
+                        "BadFormatDateTime",
+                        "BadFormatTime",
+                        "BadFormatDate",
+                        "BadFormatEmail",
+                        "BadFormatHostname",
+                        "BadFormatIPv4",
+                        "BadFormatIPv6",
+                        "BadFormatIPAddress",
+                        "BadFormatUUID",
+                        "BadFormatURI",
+                        "BadFormatURIReference",
+                        "BadFormatIRI",
+                        "BadFormatIRIReference",
+                        "BadFormatJSONPointer",
+                        "BadFormatRelativeJSONPointer",
+                        "BadFormatRegex",
+                        "BadFormatJSONPath",
+                        "BadFormatBase64",
+                        "DoesNotMatchPattern",
+                        "DoesNotMatchPatternProperties",
+                        "NotEnumMember",
+                        "AboveMaxLength",
+                        "BelowMinLength",
+                        "AboveMaxItems",
+                        "BelowMinItems",
+                        "NotMultipleOf",
+                        "NotWithinRange",
+                        "UnexpectedProperty",
+                        "InvalidPropertyName",
+                        "AboveMaxProperties",
+                        "BelowMinProperties",
+                        "NotContains",
+                        "ContainsTooMany",
+                        "ContainsTooFew",
+                        "ItemNotUnique",
+                        "UnexpectedAdditionalItem",
+                        "InvalidConst",
+                        "IsDependentOn",
+                        "IsTooBig",
+                        "IsTooSmall",
+                        "ShouldNotBeValid",
+                        "NoUnevaluatedItems",
+                        "NoUnevaluatedProperties",
+                        "DoesNotExist",
+                        "IsReadOnly",
+                        "CannotAddToDefault",
+                        "MustProvideOne",
+                        "MutuallyExclusive",
+                        "BadState",
+                        "InaccessibleURI"
+                      ]
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "Human readable description of the error"
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "Path to the data source of the error",
+                      "format": "json-pointer"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The Schema path where the error ocurred",
+                      "format": "json-pointer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "$id": "#/components/schemas/pangea-validation-errors"
+      },
+      "pangea-service-config-id": {
+        "type": "string",
+        "description": "An ID for a service config",
+        "pattern": "^pci_[a-z2-7]{32}$",
+        "examples": [
+          "pci_wuk7tvtpswyjtlsx52b7yyi2l7zotv4a"
+        ],
+        "$id": "#/components/schemas/pangea-service-config-id"
+      },
+      "redact-rule-v1": {
+        "type": "object",
+        "required": [
+          "entity_name",
+          "matchers",
+          "ruleset"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "entity_name": {
+            "type": "string"
+          },
+          "matchers": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "match_type",
+                        "match_value",
+                        "match_score"
+                      ],
+                      "properties": {
+                        "match_type": {
+                          "type": "string",
+                          "const": "starts_with"
+                        },
+                        "match_value": {
+                          "type": "string"
+                        },
+                        "match_score": {
+                          "type": "number",
+                          "maximum": 1.0,
+                          "minimum": 0.1
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "match_type",
+                        "match_value",
+                        "match_score"
+                      ],
+                      "properties": {
+                        "match_type": {
+                          "type": "string",
+                          "const": "regex"
+                        },
+                        "match_value": {
+                          "type": "string",
+                          "format": "regex"
+                        },
+                        "match_score": {
+                          "type": "number",
+                          "maximum": 1.0,
+                          "minimum": 0.1
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "CREDIT_CARD",
+                  "CRYPTO",
+                  "DATE_TIME",
+                  "EMAIL_ADDRESS",
+                  "IBAN_CODE",
+                  "IP_ADDRESS",
+                  "NRP",
+                  "LOCATION",
+                  "PERSON",
+                  "PHONE_NUMBER",
+                  "MEDICAL_LICENSE",
+                  "URL",
+                  "US_BANK_NUMBER",
+                  "US_DRIVER_LICENSE",
+                  "US_ITIN",
+                  "US_PASSPORT",
+                  "US_SSN",
+                  "UK_NHS",
+                  "NIF",
+                  "FIN/NRIC",
+                  "AU_ABN",
+                  "AU_ACN",
+                  "AU_TFN",
+                  "AU_MEDICARE",
+                  "FIREBASE_URL",
+                  "RSA_PRIVATE_KEY",
+                  "SSH_DSA_PRIVATE_KEY",
+                  "SSH_EC_PRIVATE_KEY",
+                  "PGP_PRIVATE_KEY_BLOCK",
+                  "AMAZON_AWS_ACCESS_KEY_ID",
+                  "AMAZON_AWS_SECRET_ACCESS_KEY",
+                  "AMAZON_MWS_AUTH_TOKEN",
+                  "FACEBOOK_ACCESS_TOKEN",
+                  "GITHUB_ACCESS_TOKEN",
+                  "JWT_TOKEN",
+                  "GOOGLE_API_KEY",
+                  "GOOGLE_CLOUD_PLATFORM_API_KEY",
+                  "GOOGLE_DRIVE_API_KEY",
+                  "GOOGLE_CLOUD_PLATFORM_SERVICE_ACCOUNT",
+                  "GOOGLE_GMAIL_API_KEY",
+                  "YOUTUBE_API_KEY",
+                  "MAILCHIMP_API_KEY",
+                  "MAILGUN_API_KEY",
+                  "BASIC_AUTH",
+                  "PICATIC_API_KEY",
+                  "SLACK_TOKEN",
+                  "SLACK_WEBHOOK",
+                  "STRIPE_API_KEY",
+                  "STRIPE_RESTRICTED_API_KEY",
+                  "SQUARE_ACCESS_TOKEN",
+                  "SQUARE_OAUTH_SECRET",
+                  "TWILIO_API_KEY",
+                  "PANGEA_TOKEN",
+                  "PROFANITY"
+                ]
+              }
+            ]
+          },
+          "ruleset": {
+            "type": "string"
+          },
+          "match_threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.1
+          },
+          "context_values": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "$id": "#/components/schemas/redact-rule-v1"
+      },
+      "redact-rule-v2": {
+        "type": "object",
+        "required": [
+          "entity_name",
+          "matchers"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "entity_name": {
+            "type": "string"
+          },
+          "matchers": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "required": [
+                        "match_type",
+                        "match_value",
+                        "match_score"
+                      ],
+                      "properties": {
+                        "match_type": {
+                          "type": "string",
+                          "const": "starts_with"
+                        },
+                        "match_value": {
+                          "type": "string"
+                        },
+                        "match_score": {
+                          "type": "number",
+                          "maximum": 1.0,
+                          "minimum": 0.1
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "match_type",
+                        "match_value",
+                        "match_score"
+                      ],
+                      "properties": {
+                        "match_type": {
+                          "type": "string",
+                          "const": "regex"
+                        },
+                        "match_value": {
+                          "type": "string",
+                          "format": "regex"
+                        },
+                        "match_score": {
+                          "type": "number",
+                          "maximum": 1.0,
+                          "minimum": 0.1
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "CREDIT_CARD",
+                  "CRYPTO",
+                  "DATE_TIME",
+                  "EMAIL_ADDRESS",
+                  "IBAN_CODE",
+                  "IP_ADDRESS",
+                  "NRP",
+                  "LOCATION",
+                  "PERSON",
+                  "PHONE_NUMBER",
+                  "MEDICAL_LICENSE",
+                  "URL",
+                  "US_BANK_NUMBER",
+                  "US_DRIVER_LICENSE",
+                  "US_ITIN",
+                  "US_PASSPORT",
+                  "US_SSN",
+                  "UK_NHS",
+                  "NIF",
+                  "FIN/NRIC",
+                  "AU_ABN",
+                  "AU_ACN",
+                  "AU_TFN",
+                  "AU_MEDICARE",
+                  "FIREBASE_URL",
+                  "RSA_PRIVATE_KEY",
+                  "SSH_DSA_PRIVATE_KEY",
+                  "SSH_EC_PRIVATE_KEY",
+                  "PGP_PRIVATE_KEY_BLOCK",
+                  "AMAZON_AWS_ACCESS_KEY_ID",
+                  "AMAZON_AWS_SECRET_ACCESS_KEY",
+                  "AMAZON_MWS_AUTH_TOKEN",
+                  "FACEBOOK_ACCESS_TOKEN",
+                  "GITHUB_ACCESS_TOKEN",
+                  "JWT_TOKEN",
+                  "GOOGLE_API_KEY",
+                  "GOOGLE_CLOUD_PLATFORM_API_KEY",
+                  "GOOGLE_DRIVE_API_KEY",
+                  "GOOGLE_CLOUD_PLATFORM_SERVICE_ACCOUNT",
+                  "GOOGLE_GMAIL_API_KEY",
+                  "YOUTUBE_API_KEY",
+                  "MAILCHIMP_API_KEY",
+                  "MAILGUN_API_KEY",
+                  "BASIC_AUTH",
+                  "PICATIC_API_KEY",
+                  "SLACK_TOKEN",
+                  "SLACK_WEBHOOK",
+                  "STRIPE_API_KEY",
+                  "STRIPE_RESTRICTED_API_KEY",
+                  "SQUARE_ACCESS_TOKEN",
+                  "SQUARE_OAUTH_SECRET",
+                  "TWILIO_API_KEY",
+                  "PANGEA_TOKEN",
+                  "PROFANITY"
+                ]
+              }
+            ]
+          },
+          "match_threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.1
+          },
+          "context_values": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "negative_context_values": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "$id": "#/components/schemas/redact-rule-v2"
+      },
+      "redact-ruleset-v1": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "$id": "#/components/schemas/redact-ruleset-v1"
+      },
+      "redact-ruleset-v2": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "$id": "#/components/schemas/redact-ruleset-v2"
+      },
+      "redact-redaction": {
+        "type": "object",
+        "required": [
+          "redaction_type"
+        ],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "properties": {
+              "redaction_type": {
+                "enum": [
+                  "mask",
+                  "detect_only"
+                ]
+              }
+            }
+          },
+          {
+            "required": [
+              "redaction_value"
+            ],
+            "properties": {
+              "redaction_type": {
+                "const": "replacement"
+              }
+            }
+          },
+          {
+            "required": [
+              "partial_masking"
+            ],
+            "properties": {
+              "redaction_type": {
+                "const": "partial_masking"
+              }
+            }
+          },
+          {
+            "required": [
+              "hash"
+            ],
+            "properties": {
+              "hash": {
+                "type": "object"
+              },
+              "redaction_type": {
+                "const": "hash"
+              }
+            }
+          }
+        ],
+        "properties": {
+          "redaction_type": {
+            "type": "string",
+            "enum": [
+              "mask",
+              "partial_masking",
+              "replacement",
+              "hash",
+              "detect_only"
+            ]
+          },
+          "redaction_value": {
+            "type": "string"
+          },
+          "partial_masking": {
+            "type": "object",
+            "properties": {
+              "masking_type": {
+                "type": "string",
+                "enum": [
+                  "unmask",
+                  "mask"
+                ],
+                "default": "unmask"
+              },
+              "unmasked_from_left": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unmasked_from_right": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "masked_from_left": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "masked_from_right": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "chars_to_ignore": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1
+                }
+              },
+              "masking_char": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1,
+                "default": "*"
+              }
+            }
+          },
+          "hash_type": {
+            "deprecated": true
+          },
+          "hash": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "required": [
+              "hash_type"
+            ],
+            "properties": {
+              "hash_type": {
+                "type": "string",
+                "description": "The type of hashing algorithm",
+                "enum": [
+                  "md5",
+                  "sha256"
+                ]
+              }
+            }
+          }
+        },
+        "$id": "#/components/schemas/redact-redaction"
+      },
+      "redact-default-rules": {
+        "type": "object",
+        "required": [
+          "default_rules",
+          "default_rulesets",
+          "default_redactions"
+        ],
+        "properties": {
+          "default_rules": {
+            "patternProperties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-rule-v2"
+              }
+            }
+          },
+          "default_rulesets": {
+            "patternProperties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-ruleset-v2"
+              }
+            }
+          },
+          "default_redactions": {
+            "patternProperties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-redaction"
+              }
+            }
+          }
+        },
+        "$id": "#/components/schemas/redact-default-rules"
+      },
+      "redact-service-config": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/redact-service-config-v1"
+          },
+          {
+            "$ref": "#/components/schemas/redact-service-config-v2"
+          }
+        ],
+        "$id": "#/components/schemas/redact-service-config"
+      },
+      "redact-service-config-v1": {
+        "type": "object",
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "salt_vault_secret_id"
+            ],
+            "properties": {
+              "salt_vault_secret_id": {
+                "type": "string"
+              }
+            },
+            "dependentSchemas": {
+              "salt_vault_secret_id": {
+                "required": [
+                  "vault_service_config_id"
+                ],
+                "properties": {
+                  "vault_service_config_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "salt_vault_secret_id": {
+                "type": "null"
+              }
+            }
+          }
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "default": "1.0.0",
+            "readOnly": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled_rules": {
+            "default": [],
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "redactions": {
+            "type": "object",
+            "patternProperties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-redaction"
+              }
+            }
+          },
+          "vault_service_config_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "title": "Vault Service Config ID",
+            "description": "Service config used to create the secret"
+          },
+          "salt_vault_secret_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "title": "Salt Value ID",
+            "description": "Pangea only allows hashing to be done using a salt value to prevent brute-force attacks."
+          },
+          "rules": {
+            "type": "object",
+            "patternProperties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-rule-v1"
+              }
+            }
+          },
+          "rulesets": {
+            "type": "object",
+            "properties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-ruleset-v1"
+              }
+            }
+          },
+          "supported_languages": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "en"
+              ]
+            }
+          }
+        },
+        "$id": "#/components/schemas/redact-service-config-v1"
+      },
+      "redact-service-config-v2": {
+        "type": "object",
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "required": [
+              "salt_vault_secret_id"
+            ],
+            "properties": {
+              "salt_vault_secret_id": {
+                "type": "string"
+              }
+            },
+            "dependentSchemas": {
+              "salt_vault_secret_id": {
+                "required": [
+                  "vault_service_config_id"
+                ],
+                "properties": {
+                  "vault_service_config_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "salt_vault_secret_id": {
+                "type": "null"
+              }
+            }
+          }
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "default": "1.0.0",
+            "readOnly": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "enabled_rules": {
+            "default": [],
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "redactions": {
+            "type": "object",
+            "patternProperties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-redaction"
+              }
+            }
+          },
+          "vault_service_config_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "title": "Vault Service Config ID",
+            "description": "Service config used to create the secret"
+          },
+          "salt_vault_secret_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "title": "Salt Value ID",
+            "description": "Pangea only allows hashing to be done using a salt value to prevent brute-force attacks."
+          },
+          "rules": {
+            "type": "object",
+            "patternProperties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-rule-v2"
+              }
+            }
+          },
+          "rulesets": {
+            "type": "object",
+            "properties": {
+              "^.*$": {
+                "$ref": "#/components/schemas/redact-ruleset-v2"
+              }
+            }
+          },
+          "supported_languages": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "en"
+              ]
+            }
+          }
+        },
+        "$id": "#/components/schemas/redact-service-config-v2"
+      },
+      "redact-service-config-result": {
+        "required": [
+          "id",
+          "version",
+          "name",
+          "enabled_rules",
+          "updated_at"
+        ],
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/redact-service-config-v1"
+          },
+          {
+            "$ref": "#/components/schemas/redact-service-config-v2"
+          }
+        ],
+        "$id": "#/components/schemas/redact-service-config-result"
+      },
+      "redact-debug-report": {
+        "type": "object",
+        "description": "Describes the decision process for redactions",
+        "required": [
+          "summary_counts",
+          "recognizer_results"
+        ],
+        "properties": {
+          "summary_counts": {
+            "type": "object",
+            "patternProperties": {
+              ".*": {
+                "type": "integer",
+                "example": 0
+              }
+            }
+          },
+          "recognizer_results": {
+            "description": "The scoring result of a rule",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "field_type",
+                "score",
+                "text",
+                "start",
+                "end",
+                "redacted"
+              ],
+              "properties": {
+                "field_type": {
+                  "type": "string",
+                  "description": "The entity name"
+                },
+                "score": {
+                  "type": "number",
+                  "description": "The certainty score that the entity matches this specific snippet"
+                },
+                "text": {
+                  "type": "string",
+                  "description": "The text snippet that matched"
+                },
+                "start": {
+                  "type": "integer",
+                  "description": "The starting index of a snippet"
+                },
+                "end": {
+                  "type": "integer",
+                  "description": "The ending index of a snippet"
+                },
+                "redacted": {
+                  "type": "boolean",
+                  "description": "Indicates if this rule was used to anonymize a text snippet"
+                },
+                "data_key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "If this result relates to a specific structured text field, the key pointing to this text will be provided"
+                },
+                "context_results": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "description": "Context information If context was applied to score",
+                  "$ref": "#/components/schemas/context-score-result"
+                },
+                "negative_context_results": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "description": "Context information If negative context was applied to score",
+                  "$ref": "#/components/schemas/context-score-result"
+                }
+              }
+            }
+          }
+        },
+        "$id": "#/components/schemas/redact-debug-report"
+      },
+      "context-score-result": {
+        "required": [
+          "word",
+          "start",
+          "end",
+          "score_augment"
+        ],
+        "properties": {
+          "word": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "$id": "#/components/schemas/context-score-result"
+      },
+      "rules-param": {
+        "type": "array",
+        "description": "An array of redact rule short names",
+        "uniqueItems": true,
+        "items": {
+          "type": "string"
+        },
+        "x-pangea-ui-schema": {
+          "placeholder": "[\"EMAIL_ADDRESS\"]",
+          "renderComponent": "RedactRuleOptions"
+        },
+        "$id": "#/components/schemas/rules-param"
+      },
+      "rulesets-param": {
+        "type": "array",
+        "description": "An array of redact ruleset short names",
+        "uniqueItems": true,
+        "items": {
+          "type": "string"
+        },
+        "x-pangea-ui-schema": {
+          "placeholder": "[\"PII\"]",
+          "renderComponent": "RedactRulesetOptions"
+        },
+        "$id": "#/components/schemas/rulesets-param"
+      }
+    },
+    "securitySchemes": {
+      "APIToken": {
+        "type": "http",
+        "bearerFormat": "token",
+        "description": "Pangea API Token",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema"
+}
