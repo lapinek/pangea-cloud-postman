@@ -743,12 +743,12 @@
                         "x-pangea-ui-schema": {
                           "renderComponent": "ConfigIDOptions"
                         }
-                      },
-                      "required": [
-                        "result_id"
-                      ],
-                      "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1download_results/requestBody/content/application~1json/schema"
-                    }
+                      }
+                    },
+                    "required": [
+                      "result_id"
+                    ],
+                    "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1download_results/requestBody/content/application~1json/schema"
                   }
                 ]
               }
