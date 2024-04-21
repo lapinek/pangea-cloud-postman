@@ -699,63 +699,58 @@
           "content": {
             "application/json": {
               "schema": {
-                "docs_anchor": "download-search-results",
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "assert_search_restriction": {
-                    "description": "If provided, fail if the original search was performed with anything but the provided search_restriction parameter.",
-                    "type": "object"
-                  },
-                  "result_id": {
-                    "type": "string",
-                    "description": "ID returned by the search API.",
-                    "examples": [
-                      "pas_sqilrhruwu54uggihqj3aie24wrctakr"
-                    ],
-                    "pattern": "^pas_[a-z0-9]{32}$"
-                  },
-                  "request_id": {
-                    "type": "string",
-                    "description": "ID returned by the search API.",
-                    "examples": [
-                      "prq_sqilrhruwu54uggihqj3aie24wrctakr"
-                    ],
-                    "pattern": "^prq_[a-z0-9]{32}$"
-                  },
-                  "format": {
-                    "type": "string",
-                    "description": "Format for the records.",
-                    "enum": [
-                      "json",
-                      "csv"
-                    ],
-                    "examples": [
-                      "csv"
-                    ],
-                    "default": "csv"
-                  },
-                  "config_id": {
-                    "type": "string",
-                    "description": "ID for config associated with the result.",
-                    "x-pangea-ui-schema": {
-                      "renderComponent": "ConfigIDOptions"
-                    }
-                  }
-                },
                 "oneOf": [
                   {
-                    "required": [
-                      "result_id"
-                    ]
-                  },
-                  {
-                    "required": [
-                      "request_id"
-                    ]
+                    "docs_anchor": "download-search-results",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "assert_search_restriction": {
+                        "description": "If provided, fail if the original search was performed with anything but the provided search_restriction parameter.",
+                        "type": "object"
+                      },
+                      "result_id": {
+                        "type": "string",
+                        "description": "ID returned by the search API.",
+                        "examples": [
+                          "pas_sqilrhruwu54uggihqj3aie24wrctakr"
+                        ],
+                        "pattern": "^pas_[a-z0-9]{32}$"
+                      },
+                      "request_id": {
+                        "type": "string",
+                        "description": "ID returned by the search API.",
+                        "examples": [
+                          "prq_sqilrhruwu54uggihqj3aie24wrctakr"
+                        ],
+                        "pattern": "^prq_[a-z0-9]{32}$"
+                      },
+                      "format": {
+                        "type": "string",
+                        "description": "Format for the records.",
+                        "enum": [
+                          "json",
+                          "csv"
+                        ],
+                        "examples": [
+                          "csv"
+                        ],
+                        "default": "csv"
+                      },
+                      "config_id": {
+                        "type": "string",
+                        "description": "ID for config associated with the result.",
+                        "x-pangea-ui-schema": {
+                          "renderComponent": "ConfigIDOptions"
+                        }
+                      },
+                      "required": [
+                        "result_id"
+                      ],
+                      "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1download_results/requestBody/content/application~1json/schema"
+                    }
                   }
-                ],
-                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1download_results/requestBody/content/application~1json/schema"
+                ]
               }
             }
           }
