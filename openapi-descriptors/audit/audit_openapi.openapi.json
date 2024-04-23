@@ -1,0 +1,1700 @@
+{
+  "info": {
+    "title": "audit",
+    "description": "Tamperproof audit trail",
+    "version": "1"
+  },
+  "servers": [
+    {
+      "url": "https://audit.aws.us.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    },
+    {
+      "url": "https://audit.gcp.us.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    },
+    {
+      "url": "https://audit.aws.eu.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    },
+    {
+      "url": "https://audit.gcp.eu.pangea.cloud",
+      "description": "Pangea regional service cluster"
+    }
+  ],
+  "paths": {
+    "/v1/log": {
+      "post": {
+        "operationId": "audit_post_v1_log",
+        "summary": "Log an entry",
+        "description": "Create a log entry in the Secure Audit Log.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditLogRequest",
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1log/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Record has been persisted successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1log/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditLogResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/log_stream": {
+      "post": {
+        "operationId": "audit_post_v1_log_stream",
+        "summary": "Log streaming endpoint",
+        "description": "This API allows third-party vendors like Auth0 to stream log events to this endpoint. The payload structure may vary across different vendors. Please refer to examples in the [SDKs](/docs/sdk) to test this functionality and consult the [Log Streaming](/docs/audit/log-streaming) documentation for details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1log_stream/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1log_stream/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "properties": {}
+                    }
+                  }
+                }
+              }
+            },
+            "description": "No description provided"
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/search": {
+      "post": {
+        "operationId": "audit_post_v1_search",
+        "summary": "Search the log",
+        "description": "Search the Secure Audit Log.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "docs_anchor": "search-the-log",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "Natural search string; a space-separated list of case-sensitive values used to search for records, which includes the optional `<field>:` prefix to limit the search to a specific field. Values with a space can be enclosed in double-quote (`\"`) characters:\n\n * `\"search text\"`: any field contains \"search text\"\n * `actor:\"Jane Doe\"`: the actor field contains \"Jane Doe\"\n * `actor:alice target:bob sent`: actor contains \"alice\", target contains \"bob\", and any field contains \"sent\".\n\n The following optional prefixes are supported: `action:`, `actor:`,  `message:`, `new:`, `old:`, `source:`, `status:`, `target:`.",
+                    "examples": [
+                      "actor:\"Jane Doe\" target:cosmos",
+                      "\"viewed x-ray\""
+                    ]
+                  },
+                  "config_id": {
+                    "type": "string",
+                    "description": "Config ID. Can be found at the top of the [Secure Audit Log dashboard](https://console.pangea.cloud/service/audit).",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  },
+                  "end": {
+                    "description": "The end of the time range to perform the search on. All records up to the latest if left out.",
+                    "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel"
+                  },
+                  "max_results": {
+                    "type": "integer",
+                    "description": "Maximum number of results to return.",
+                    "minimum": 1,
+                    "maximum": 10000
+                  },
+                  "verbose": {
+                    "type": "boolean",
+                    "description": "If true, include the root hash of the tree and the membership proof for each record.",
+                    "default": true
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "description": "Number of audit records to include from the first page of the results."
+                  },
+                  "order": {
+                    "type": "string",
+                    "description": "Specify the sort order of the response.",
+                    "enum": ["asc", "desc"]
+                  },
+                  "order_by": {
+                    "type": "string",
+                    "description": "Name of column to sort the results by.",
+                    "enum": [
+                      "actor",
+                      "action",
+                      "message",
+                      "received_at",
+                      "source",
+                      "status",
+                      "target",
+                      "timestamp"
+                    ]
+                  },
+                  "search_restriction": {
+                    "type": "object",
+                    "description": "A list of keys to restrict the search results to. Useful for partitioning data available to the query string.",
+                    "properties": {
+                      "actor": {
+                        "type": "array",
+                        "description": "A list of actors to restrict the search to.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "action": {
+                        "type": "array",
+                        "description": "A list of actions to restrict the search to.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "source": {
+                        "type": "array",
+                        "description": "A list of sources to restrict the search to.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "status": {
+                        "type": "array",
+                        "description": "A list of statuses to restrict the search to.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "target": {
+                        "type": "array",
+                        "description": "A list of targets to restrict the search to.",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "tenant_id": {
+                        "type": "array",
+                        "description": "A list of tenant_ids to restrict the search to.",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": []
+                  },
+                  "start": {
+                    "description": "The start of the time range to perform the search on.",
+                    "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel"
+                  }
+                },
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1search/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search has completed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1search/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "required": ["count", "events"],
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "The total number of events that were returned by the search."
+                        },
+                        "events": {
+                          "type": "array",
+                          "description": "A list of matching audit event results.",
+                          "items": {
+                            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditSearchResult"
+                          }
+                        },
+                        "expires_at": {
+                          "type": "string",
+                          "description": "The time when the results will no longer be available to page through via the results API.",
+                          "format": "date-time"
+                        },
+                        "id": {
+                          "type": "string",
+                          "description": "Identifier to supply to search_results API to fetch/paginate through search results."
+                        },
+                        "root": {
+                          "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditRoot"
+                        },
+                        "unpublished_root": {
+                          "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditUnpublishedRoot"
+                        }
+                      },
+                      "examples": [
+                        {
+                          "count": 1,
+                          "events": [
+                            {
+                              "envelope": {
+                                "event": {
+                                  "message": "hello world"
+                                }
+                              },
+                              "received_at": "2022-08-09T23:30:01.313785+00:00"
+                            }
+                          ],
+                          "expires_at": "2022-08-11T23:42:15.558320Z",
+                          "id": "pas_sqilrhruwu54uggihqj3aie24wrctakr"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/results": {
+      "post": {
+        "operationId": "audit_post_v1_results",
+        "summary": "Search results",
+        "description": "Page through results from a previous search.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "docs_anchor": "search-results",
+                "type": "object",
+                "properties": {
+                  "assert_search_restriction": {
+                    "description": "If provided, fail if the original search was performed with anything but the provided search_restriction parameter.",
+                    "type": "object"
+                  },
+                  "config_id": {
+                    "type": "string",
+                    "description": "Config ID. Can be found at the top of the [Secure Audit Log dashboard](https://console.pangea.cloud/service/audit).",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "A search results identifier returned by the search call."
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "description": "Number of audit records to include in a single set of results."
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "description": "Offset from the start of the result set to start returning results from."
+                  }
+                },
+                "required": ["id"],
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1results/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results have been provided successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1results/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "required": ["count", "events"],
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "The total number of results returned by the search."
+                        },
+                        "events": {
+                          "type": "array",
+                          "description": "A list of matching audit records.",
+                          "items": {
+                            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditSearchResult"
+                          }
+                        },
+                        "root": {
+                          "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditRoot"
+                        },
+                        "unpublished_root": {
+                          "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditUnpublishedRoot"
+                        }
+                      },
+                      "examples": [
+                        {
+                          "count": 1,
+                          "events": [
+                            {
+                              "envelope": {
+                                "event": {
+                                  "message": "hello world",
+                                  "timestamp": "2022-08-09T23:30:01.313785Z"
+                                },
+                                "received_at": "2022-08-09T23:30:01.111111Z"
+                              },
+                              "hash": "4c3fc1461e3335a938477d0a4807bce6c4f4529e7adc185013cde1ef204842c2"
+                            }
+                          ],
+                          "expires_at": "2022-08-11T23:42:15.558320Z",
+                          "id": "pas_sqilrhruwu54uggihqj3aie24wrctakr"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/root": {
+      "post": {
+        "operationId": "audit_post_v1_root",
+        "summary": "Tamperproof Verification",
+        "description": "Return current root hash and consistency proof.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "docs_anchor": "root",
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "config_id": {
+                    "type": "string",
+                    "description": "Config ID. Can be found at the top of the [Secure Audit Log dashboard](https://console.pangea.cloud/service/audit).",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  },
+                  "tree_size": {
+                    "type": "integer",
+                    "description": "The size of the tree (the number of records)",
+                    "minimum": 1
+                  }
+                },
+                "additionalProperties": false,
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1root/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The requested root was returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1root/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditRoot",
+                      "examples": [
+                        {
+                          "published_at": "2022-06-27T16:10:42.254390Z",
+                          "root_hash": "fd47cdb54df534aa4248a603ae24e06e147ffac7036dbf2ad8c04422e978fe1b",
+                          "size": 1,
+                          "tree_name": "e86b32dbb1993e2a6cf8c8802b2a639bddc8746e7abc0cb0bd6439c10b6cf3a7",
+                          "url": "https://arweave.net/tx/S6cuFlRrK0zFqftCMk-EFw0KTgSILbcCNEKpEpIk6nI/data/"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/log": {
+      "post": {
+        "operationId": "audit_post_v2_log",
+        "summary": "Log multiple entries",
+        "description": "Create multiple log entries in the Secure Audit Log.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["events"],
+                "properties": {
+                  "config_id": {
+                    "type": "string",
+                    "description": "Config ID. Can be found at the top of the [Secure Audit Log dashboard](https://console.pangea.cloud/service/audit).",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  },
+                  "verbose": {
+                    "type": "boolean",
+                    "description": "If true, be verbose in the response; include all the data stored, creation time and proofs for the new event (both for membership and consistency)",
+                    "default": false
+                  },
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditLogRequestV2"
+                    },
+                    "maxItems": 1000,
+                    "minItems": 1,
+                    "examples": [
+                      [
+                        {
+                          "event": {
+                            "message": "hello world"
+                          }
+                        }
+                      ]
+                    ]
+                  }
+                },
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v2~1log/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v2~1log/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditLogResponse"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "description": "No description provided"
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/log_async": {
+      "post": {
+        "operationId": "audit_post_v2_log_async",
+        "summary": "Log multiple entries asynchronously",
+        "description": "Asynchronously create multiple log entries in the Secure Audit Log.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["events"],
+                "properties": {
+                  "config_id": {
+                    "type": "string",
+                    "description": "Config ID. Can be found at the top of the [Secure Audit Log dashboard](https://console.pangea.cloud/service/audit).",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  },
+                  "verbose": {
+                    "type": "boolean",
+                    "description": "If true, be verbose in the response; include all the data stored, creation time and proofs for the new event (both for membership and consistency)",
+                    "default": false
+                  },
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditLogRequestV2"
+                    },
+                    "maxItems": 1000,
+                    "minItems": 1,
+                    "examples": [
+                      [
+                        {
+                          "event": {
+                            "message": "hello world"
+                          }
+                        }
+                      ]
+                    ]
+                  }
+                },
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v2~1log_async/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Record is accepted and being processed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v2~1log_async/responses/202/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AcceptedResponseResult"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/download_results": {
+      "post": {
+        "operationId": "audit_post_v1_download_results",
+        "summary": "Download search results",
+        "description": "Get all search results as a compressed (gzip) CSV file.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "docs_anchor": "download-search-results",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "assert_search_restriction": {
+                    "description": "If provided, fail if the original search was performed with anything but the provided search_restriction parameter.",
+                    "type": "object"
+                  },
+                  "result_id": {
+                    "type": "string",
+                    "description": "ID returned by the search API.",
+                    "examples": ["pas_sqilrhruwu54uggihqj3aie24wrctakr"],
+                    "pattern": "^pas_[a-z0-9]{32}$"
+                  },
+                  "request_id": {
+                    "type": "string",
+                    "description": "ID returned by the search API.",
+                    "examples": ["prq_sqilrhruwu54uggihqj3aie24wrctakr"],
+                    "pattern": "^prq_[a-z0-9]{32}$"
+                  },
+                  "format": {
+                    "type": "string",
+                    "description": "Format for the records.",
+                    "enum": ["json", "csv"],
+                    "examples": ["csv"],
+                    "default": "csv"
+                  },
+                  "config_id": {
+                    "type": "string",
+                    "description": "ID for config associated with the result.",
+                    "x-pangea-ui-schema": {
+                      "renderComponent": "ConfigIDOptions"
+                    }
+                  }
+                },
+                "oneOf": [
+                  {
+                    "required": ["result_id"]
+                  },
+                  {
+                    "required": ["request_id"]
+                  }
+                ],
+                "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1download_results/requestBody/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Results retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$id": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/paths/~1v1~1download_results/responses/200/content/application~1json/schema",
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+                  "$defs": {},
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "required": ["dest_url", "expires_at"],
+                      "properties": {
+                        "dest_url": {
+                          "type": "string",
+                          "description": "URL where search results can be downloaded"
+                        },
+                        "expires_at": {
+                          "type": "string",
+                          "description": "The time when the results will no longer be available to page through via the results API.",
+                          "format": "date-time"
+                        }
+                      },
+                      "examples": [
+                        {
+                          "dest_url": "https://pangea-runtime.s3.amazonaws.com/audit/xxxxx/search_results_pas_sbexwdijj4sgxxv264xyjjnyhxa7yvkd.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=xxxxx%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20240227T202443Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Security-Token=xxxxx",
+                          "expires_at": "2022-08-11T23:42:15.558320Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-validation-errors"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "openapi": "3.1.0",
+  "components": {
+    "schemas": {
+      "pangea-response": {
+        "title": "Response Schema",
+        "description": "Pangea standard response schema",
+        "type": "object",
+        "required": ["request_id", "request_time", "response_time", "status"],
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "A unique identifier assigned to each request made to the API. It is used to track and identify a specific request and its associated data. The `request_id` can be helpful for troubleshooting, auditing, and tracing the flow of requests within the system. It allows users to reference and retrieve information related to a particular request, such as the response, parameters, and raw data associated with that specific request.\n\n```\n\"request_id\":\"prq_x6fdiizbon6j3bsdvnpmwxsz2aan7fqd\"\n```"
+          },
+          "request_time": {
+            "type": "string",
+            "description": "The timestamp indicates the exact moment when a request is made to the API. It represents the date and time at which the request was initiated by the client. The `request_time` is useful for tracking and analyzing the timing of requests, measuring response times, and monitoring performance metrics. It allows users to determine the duration between the request initiation and the corresponding response, aiding in the assessment of API performance and latency.\n\n```\n\"request_time\":\"2022-09-21T17:24:33.105Z\"\n```"
+          },
+          "response_time": {
+            "type": "string",
+            "description": "Duration it takes for the API to process a request and generate a response. It represents the elapsed time from when the request is received by the API to when the corresponding response is returned to the client.\n\n```\n\"response_time\":\"2022-09-21T17:24:34.007Z\"\n```"
+          },
+          "status": {
+            "type": "string",
+            "description": "It represents the status or outcome of the API request made for IP information. It indicates the current state or condition of the request and provides information on the success or failure of the request.\n\n```\n\"status\":\"success\"\n```"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Provides a concise and brief overview of the purpose or primary objective of the API endpoint. It serves as a high-level summary or description of the functionality or feature offered by the endpoint."
+          },
+          "result": {
+            "type": "object"
+          }
+        },
+        "examples": [
+          {
+            "request_id": "prq_x6fdiizbon6j3bsdvnpmwxsz2aan7fqd",
+            "request_time": "2022-09-21T17:24:33.105Z",
+            "response_time": "2022-09-21T17:24:34.007Z",
+            "status": "success"
+          }
+        ],
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/pangea-response"
+      },
+      "pangea-validation-errors": {
+        "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/pangea-response",
+        "required": ["result"],
+        "properties": {
+          "result": {
+            "type": "object",
+            "required": ["errors"],
+            "properties": {
+              "errors": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["code", "detail", "source"],
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "enum": [
+                        "FieldRequired",
+                        "InvalidString",
+                        "InvalidNumber",
+                        "InvalidInteger",
+                        "InvalidObject",
+                        "InvalidArray",
+                        "InvalidNull",
+                        "InvalidBool",
+                        "BadFormat",
+                        "BadFormatPangeaDuration",
+                        "BadFormatDateTime",
+                        "BadFormatTime",
+                        "BadFormatDate",
+                        "BadFormatEmail",
+                        "BadFormatHostname",
+                        "BadFormatIPv4",
+                        "BadFormatIPv6",
+                        "BadFormatIPAddress",
+                        "BadFormatUUID",
+                        "BadFormatURI",
+                        "BadFormatURIReference",
+                        "BadFormatIRI",
+                        "BadFormatIRIReference",
+                        "BadFormatJSONPointer",
+                        "BadFormatRelativeJSONPointer",
+                        "BadFormatRegex",
+                        "BadFormatJSONPath",
+                        "BadFormatBase64",
+                        "DoesNotMatchPattern",
+                        "DoesNotMatchPatternProperties",
+                        "NotEnumMember",
+                        "AboveMaxLength",
+                        "BelowMinLength",
+                        "AboveMaxItems",
+                        "BelowMinItems",
+                        "NotMultipleOf",
+                        "NotWithinRange",
+                        "UnexpectedProperty",
+                        "InvalidPropertyName",
+                        "AboveMaxProperties",
+                        "BelowMinProperties",
+                        "NotContains",
+                        "ContainsTooMany",
+                        "ContainsTooFew",
+                        "ItemNotUnique",
+                        "UnexpectedAdditionalItem",
+                        "InvalidConst",
+                        "IsDependentOn",
+                        "IsTooBig",
+                        "IsTooSmall",
+                        "ShouldNotBeValid",
+                        "NoUnevaluatedItems",
+                        "NoUnevaluatedProperties",
+                        "DoesNotExist",
+                        "IsReadOnly",
+                        "CannotAddToDefault",
+                        "MustProvideOne",
+                        "MutuallyExclusive",
+                        "BadState",
+                        "InaccessibleURI"
+                      ]
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "Human readable description of the error"
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "Path to the data source of the error",
+                      "format": "json-pointer"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The Schema path where the error ocurred",
+                      "format": "json-pointer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/pangea-validation-errors"
+      },
+      "pangea-service-config-id": {
+        "type": "string",
+        "description": "An ID for a service config",
+        "pattern": "^pci_[a-z2-7]{32}$",
+        "examples": ["pci_wuk7tvtpswyjtlsx52b7yyi2l7zotv4a"],
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/pangea-service-config-id"
+      },
+      "AcceptedResponseResult": {
+        "type": "object",
+        "required": ["ttl_mins", "retry_counter", "location"],
+        "additionalProperties": false,
+        "properties": {
+          "ttl_mins": {
+            "type": "integer",
+            "description": "TTL from now until which results are stored for retrieval."
+          },
+          "retry_counter": {
+            "type": "integer",
+            "description": "Number of retry counts performed so far to fetch the results."
+          },
+          "location": {
+            "type": "string",
+            "description": "The location to check results of the asynchronous request."
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AcceptedResponseResult"
+      },
+      "AuditLogRequest": {
+        "type": "object",
+        "description": "A request to log an event.",
+        "required": ["event"],
+        "additionalProperties": false,
+        "properties": {
+          "config_id": {
+            "type": "string",
+            "description": "Config ID. Can be found at the top of the [Secure Audit Log dashboard](https://console.pangea.cloud/service/audit).",
+            "x-pangea-ui-schema": {
+              "renderComponent": "ConfigIDOptions"
+            }
+          },
+          "event": {
+            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditEvent"
+          },
+          "prev_root": {
+            "type": "string",
+            "description": "This is the unpublished root hash that was returned from the last log API call that was made. If the user does not provide prev_root, the consistency proof from the last known unpublished root will be provided.",
+            "pattern": "^[a-z0-9]{64}"
+          },
+          "public_key": {
+            "type": "string",
+            "description": "The base64-encoded ed25519 public key used for the signature, if one is provided",
+            "maxLength": 256
+          },
+          "signature": {
+            "type": "string",
+            "description": "This is the signature of the hash of the canonicalized event that can be verified with the public key provided in the public_key field. Signatures cannot be used with the redaction feature turned on. If redaction is required, the user needs to perform redaction before computing the signature that is to be sent with the message. The SDK facilitates this for users.",
+            "maxLength": 256
+          },
+          "verbose": {
+            "type": "boolean",
+            "description": "If true, be verbose in the response; include all the data stored, creation time and proofs for the new event (both for membership and consistency)",
+            "default": false
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditLogRequest"
+      },
+      "AuditLogRequestV2": {
+        "type": "object",
+        "description": "A request to log an event.",
+        "required": ["event"],
+        "additionalProperties": false,
+        "properties": {
+          "event": {
+            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditEvent"
+          },
+          "public_key": {
+            "type": "string",
+            "description": "The base64-encoded ed25519 public key used for the signature, if one is provided",
+            "maxLength": 256
+          },
+          "signature": {
+            "type": "string",
+            "description": "This is the signature of the hash of the canonicalized event that can be verified with the public key provided in the public_key field. Signatures cannot be used with the redaction feature turned on. If redaction is required, the user needs to perform redaction before computing the signature that is to be sent with the message. The SDK facilitates this for users.",
+            "maxLength": 256
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditLogRequestV2"
+      },
+      "AuditLogResponse": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "description": "The sealed envelope containing the event that was logged. Includes event metadata such as optional client-side signature details and server-added timestamps."
+          },
+          "hash": {
+            "type": "string",
+            "description": "The hash of the event data.",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "unpublished_root": {
+            "type": "string",
+            "description": "The current unpublished root.",
+            "pattern": "^[a-z0-9]{64}"
+          },
+          "membership_proof": {
+            "description": "A proof for verifying that the buffer_root contains the received event",
+            "type": "string"
+          },
+          "consistency_proof": {
+            "description": "If prev_buffer_root was present in the request, this proof verifies that the new unpublished root is a continuation of prev_unpublished_root",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditLogResponse"
+      },
+      "AuditLogResponseV2": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "envelope": {
+            "type": "object",
+            "description": "The sealed envelope containing the event that was logged. Includes event metadata such as optional client-side signature details and server-added timestamps."
+          },
+          "hash": {
+            "type": "string",
+            "description": "The hash of the event data.",
+            "minLength": 64,
+            "maxLength": 64
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditLogResponseV2"
+      },
+      "AuditEvent": {
+        "type": "object",
+        "required": ["message"],
+        "description": "A structured record describing that \\<actor\\> did \\<action\\> on \\<target\\> changing it from \\<old\\> to \\<new\\> and the operation was \\<status\\>, and/or a free-form \\<message\\>.",
+        "additionalProperties": false,
+        "properties": {
+          "actor": {
+            "type": "string",
+            "description": "An identifier for _who_ the audit record is about.",
+            "maxLength": 128,
+            "examples": ["John Doe", "user-id", "DennisNedry@InGen.com"]
+          },
+          "action": {
+            "type": "string",
+            "description": "What action was performed on a record.",
+            "maxLength": 32,
+            "examples": ["created", "deleted", "updated"]
+          },
+          "message": {
+            "type": "string",
+            "description": "A free form text field describing the event.",
+            "maxLength": 32766,
+            "examples": ["Hello, World!"]
+          },
+          "new": {
+            "type": "string",
+            "description": "The value of a record _after_ it was changed.",
+            "maxLength": 32766
+          },
+          "old": {
+            "type": "string",
+            "description": "The value of a record _before_ it was changed.",
+            "maxLength": 32766
+          },
+          "source": {
+            "type": "string",
+            "description": "The source of a record.",
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "description": "The status or result of the event.",
+            "maxLength": 32,
+            "examples": ["failure", "success"]
+          },
+          "target": {
+            "type": "string",
+            "description": "An identifier for what the audit record is about.",
+            "maxLength": 128
+          },
+          "tenant_id": {
+            "type": "string",
+            "description": "An optional client-supplied tenant_id.",
+            "maxLength": 128
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "An optional client-supplied timestamp.",
+            "maxLength": 128
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditEvent"
+      },
+      "AuditEventEnvelope": {
+        "type": "object",
+        "description": "An audit record returned by a search operation",
+        "properties": {
+          "event": {
+            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditEvent"
+          },
+          "err": {
+            "type": "array",
+            "description": "A list of errors (if any) encountered when processing the event. A non-empty array indicates the client had sent a malformed event.",
+            "items": {
+              "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditEventUserError"
+            }
+          },
+          "received_at": {
+            "description": "A Pangea provided timestamp of when the event was received.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "signature": {
+            "type": "string",
+            "description": "This is the signature of the hash of the canonicalized event that can be verified with the public key provided in the public_key field. Signatures cannot be used with the redaction feature turned on. If redaction is required, the user needs to perform redaction before computing the signature that is to be sent with the message. The SDK facilitates this for users.",
+            "maxLength": 256
+          },
+          "public_key": {
+            "type": "string",
+            "description": "The base64-encoded ed25519 public key used for the signature, if one is provided",
+            "maxLength": 256
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditEventEnvelope"
+      },
+      "AuditEventUserError": {
+        "description": "Details on the failure to properly process an event.",
+        "type": "object",
+        "required": ["error", "field"],
+        "properties": {
+          "error": {
+            "description": "A description of the detected error/problem with the original event.",
+            "type": "string"
+          },
+          "field": {
+            "description": "The original JSON field where the error was detected.",
+            "type": "string"
+          },
+          "value": {
+            "description": "The original JSON value (may be truncated.)"
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditEventUserError"
+      },
+      "AuditSchemaTemplate": {
+        "description": "An audit schema template supporting an example use case.",
+        "type": "object",
+        "properties": {
+          "default": {
+            "description": "If true, expected to be the default UI selection.",
+            "type": "boolean",
+            "default": false
+          },
+          "title": {
+            "description": "User facing title of the schema.",
+            "type": "string"
+          },
+          "schema": {
+            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditSchema"
+          }
+        },
+        "additionalProperties": false,
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditSchemaTemplate"
+      },
+      "AuditSchemaField": {
+        "type": "object",
+        "description": "A description of a field in an audit log.",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {
+            "description": "Prefix name / identity for the field.",
+            "type": "string",
+            "maxLength": 32,
+            "not": {
+              "enum": ["received_at"]
+            },
+            "pattern": "^[a-z][0-9a-z_]*$"
+          },
+          "description": {
+            "description": "Human display description of the field.",
+            "maxLength": 255,
+            "type": "string"
+          },
+          "name": {
+            "description": "Human display name/title of the field.",
+            "maxLength": 64,
+            "type": "string"
+          },
+          "redact": {
+            "description": "If true, redaction is performed against this field (if configured.) Only valid for string type.",
+            "type": "boolean"
+          },
+          "required": {
+            "description": "If true, this field is required to exist in all logged events.",
+            "type": "boolean"
+          },
+          "size": {
+            "description": "The maximum size of the field. Only valid for strings, which limits number of UTF-8 characters.",
+            "type": "integer"
+          },
+          "type": {
+            "description": "The data type for the field.",
+            "type": "string",
+            "enum": [
+              "boolean",
+              "datetime",
+              "integer",
+              "string",
+              "string-unindexed"
+            ]
+          },
+          "ui_default_visible": {
+            "description": "If true, this field is visible by default in audit UIs.",
+            "type": "boolean"
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditSchemaField"
+      },
+      "AuditSchema": {
+        "type": "object",
+        "description": "A description of acceptable fields for an audit log.",
+        "properties": {
+          "client_signable": {
+            "description": "If true, records contain fields to support client/vault signing.",
+            "type": "boolean",
+            "enum": [true]
+          },
+          "save_malformed": {
+            "description": "Save (or reject) malformed AuditEvents.",
+            "type": "string",
+            "default": "reject",
+            "enum": ["all", "reject", "unredacted"]
+          },
+          "tamper_proofing": {
+            "description": "If true, records contain fields to support tamper-proofing.",
+            "type": "boolean",
+            "enum": [true]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditSchemaField"
+            }
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditSchema"
+      },
+      "AuditSearchResult": {
+        "type": "object",
+        "description": "An audit record returned by a search operation",
+        "properties": {
+          "envelope": {
+            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditEventEnvelope"
+          },
+          "membership_proof": {
+            "type": "string",
+            "description": "A cryptographic proof that the record has been persisted in the log"
+          },
+          "hash": {
+            "type": "string",
+            "description": "The record's hash",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "published": {
+            "type": "boolean",
+            "description": "If true, a root has been published after this event. If false, there is no published root for this event"
+          },
+          "leaf_index": {
+            "type": "integer",
+            "description": "The index of the leaf of the Merkle Tree where this record was inserted or null if published=false"
+          },
+          "valid_signature": {
+            "type": "boolean",
+            "description": "Result of the verification of the Vault signature, if the event was signed and the parameter `verify_signature` is `true`",
+            "x-pangea-ui-schema": {
+              "isPublic": false
+            }
+          }
+        },
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditSearchResult"
+      },
+      "AuditServiceConfigV1": {
+        "type": "object",
+        "description": "Configuration options available for audit service",
+        "required": [],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The config ID"
+          },
+          "version": {
+            "type": "integer",
+            "enum": [1]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The DB timestamp when this config was created. Ignored when submitted.",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "The DB timestamp when this config was last updated at",
+            "format": "date-time"
+          },
+          "name": {
+            "description": "configuration name",
+            "type": "string"
+          },
+          "retention": {
+            "description": "Retention window to store audit logs.",
+            "default": "90d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "cold_query_result_retention": {
+            "description": "Retention window for cold query result / state information.",
+            "default": "2d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "hot_storage": {
+            "description": "Retention window to keep audit logs in hot storage.",
+            "default": "14d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "query_result_retention": {
+            "description": "Length of time to preserve server-side query result caching.",
+            "default": "2d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "redact_service_config_id": {
+            "description": "A redact service config that will be used to redact PII from logs.",
+            "type": ["string", "null"]
+          },
+          "redaction_fields": {
+            "description": "Fields to perform redaction against.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "message",
+                "new",
+                "old",
+                "actor",
+                "action",
+                "status",
+                "target",
+                "tenant_id",
+                "source"
+              ]
+            }
+          },
+          "vault_service_config_id": {
+            "description": "A vault service config that will be used to sign logs.",
+            "type": ["string", "null"]
+          },
+          "vault_key_id": {
+            "description": "ID of the Vault key used for signing. If missing, use a default Audit key",
+            "type": "string"
+          },
+          "vault_sign": {
+            "description": "Enable/disable event signing",
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditServiceConfigV1"
+      },
+      "AuditServiceConfigV2": {
+        "type": "object",
+        "description": "Configuration options available for audit service",
+        "required": ["schema", "version"],
+        "properties": {
+          "cold_query_result_retention": {
+            "description": "Retention window for cold query result / state information.",
+            "default": "2d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The DB timestamp when this config was created. Ignored when submitted.",
+            "format": "date-time"
+          },
+          "hot_storage": {
+            "description": "Retention window to keep audit logs in hot storage.",
+            "default": "14d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "The config ID"
+          },
+          "name": {
+            "description": "configuration name",
+            "type": "string"
+          },
+          "query_result_retention": {
+            "description": "Length of time to preserve server-side query result caching.",
+            "default": "2d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "redact_service_config_id": {
+            "description": "A redact service config that will be used to redact PII from logs.",
+            "type": ["string", "null"]
+          },
+          "retention": {
+            "description": "Retention window to store audit logs.",
+            "default": "90d",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+              }
+            ]
+          },
+          "schema": {
+            "description": "Audit log field configuration. Only settable at create time.",
+            "oneOf": [
+              {
+                "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/AuditSchema"
+              }
+            ]
+          },
+          "shards": {
+            "description": "Number of OpenSearch shards to use per index.",
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 1,
+            "x-pangea-ui-schema": {
+              "isPublic": false
+            }
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "The DB timestamp when this config was last updated at",
+            "format": "date-time"
+          },
+          "vault_key_id": {
+            "description": "ID of the Vault key used for signing. If missing, use a default Audit key",
+            "type": "string"
+          },
+          "vault_service_config_id": {
+            "description": "A vault service config that will be used to sign logs.",
+            "type": ["string", "null"]
+          },
+          "vault_sign": {
+            "description": "Enable/disable event signing",
+            "type": "boolean",
+            "default": false
+          },
+          "version": {
+            "type": "integer",
+            "enum": [2]
+          },
+          "forwarding_configuration": {
+            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/ForwardingConfiguration"
+          }
+        },
+        "additionalProperties": false,
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditServiceConfigV2"
+      },
+      "AuditRoot": {
+        "type": "object",
+        "description": "A root of a Merkle Tree",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The size of the tree (the number of records)"
+          },
+          "root_hash": {
+            "type": "string",
+            "description": "The root hash",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date/time when this root was published"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL where this root has been published"
+          },
+          "tree_name": {
+            "type": "string",
+            "description": "The name of the Merkle Tree"
+          },
+          "consistency_proof": {
+            "type": "string",
+            "description": "Consistency proof to verify that this root is a continuation of the previous one"
+          }
+        },
+        "examples": [
+          {
+            "published_at": "2022-06-27T16:10:42.254390Z",
+            "root_hash": "fd47cdb54df534aa4248a603ae24e06e147ffac7036dbf2ad8c04422e978fe1b",
+            "size": 1,
+            "tree_name": "e86b32dbb1993e2a6cf8c8802b2a639bddc8746e7abc0cb0bd6439c10b6cf3a7",
+            "url": "https://arweave.net/tx/S6cuFlRrK0zFqftCMk-EFw0KTgSILbcCNEKpEpIk6nI/data/"
+          }
+        ],
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditRoot"
+      },
+      "AuditUnpublishedRoot": {
+        "type": "object",
+        "description": "A root of a Merkle Tree that was not published yet",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The size of the tree (the number of records)"
+          },
+          "root_hash": {
+            "type": "string",
+            "description": "The root hash",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "tree_name": {
+            "type": "string",
+            "description": "The name of the Merkle Tree"
+          },
+          "consistency_proof": {
+            "type": "string",
+            "description": "Consistency proof to verify that this root is a continuation of the previous one"
+          }
+        },
+        "examples": [
+          {
+            "root_hash": "fd47cdb54df534aa4248a603ae24e06e147ffac7036dbf2ad8c04422e978fe1b",
+            "size": 1,
+            "tree_name": "e86b32dbb1993e2a6cf8c8802b2a639bddc8746e7abc0cb0bd6439c10b6cf3a7"
+          }
+        ],
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/AuditUnpublishedRoot"
+      },
+      "DateTimeRel": {
+        "type": "string",
+        "description": "An RFC-3339 formatted timestamp, or relative time adjustment from the current time.",
+        "oneOf": [
+          {
+            "$ref": "https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/Duration"
+          },
+          {
+            "description": "Absolute timestamp.",
+            "pattern": "^\\d{4}-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}:\\d{1,2}(.\\d{1,6})?([\\+\\-]\\d{1,2}(:?\\d{1,2})?|Z)?$"
+          }
+        ],
+        "maxLength": 128,
+        "examples": [
+          "2022-01-02T01:02:03Z",
+          "7d",
+          "1day",
+          "120min",
+          "2months"
+        ],
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/DateTimeRel"
+      },
+      "Duration": {
+        "description": "A period of time.",
+        "pattern": "^(\\d+)(d|da|day|days|h|hour|hr|hrs|hours|mi|min|mins|minute|minutes|mo|mon|month|months|s|sec|secs|second|seconds|w|week|weeks|y|year|years)$",
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/Duration"
+      },
+      "ForwardingConfiguration": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "forwarding_enabled": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "oneOf": [
+          {
+            "required": ["event_url", "vault_config_id", "vault_secret_id"],
+            "properties": {
+              "type": {
+                "const": "splunk",
+                "description": "Splunk Forwarder type"
+              },
+              "event_url": {
+                "type": "string",
+                "description": "URL where events will be written to. Must use HTTPS",
+                "format": "uri"
+              },
+              "ack_url": {
+                "type": "string",
+                "description": "If indexer acknowledgement is required, this must be provided along with a 'channel_id'."
+              },
+              "channel_id": {
+                "type": "string",
+                "description": "An optional splunk channel included in each request if indexer acknowledgement is required for the HEC token along with the 'ack_url'"
+              },
+              "public_cert": {
+                "type": "string",
+                "format": "base64",
+                "description": "Public certificate if a self signed TLS cert is being used"
+              },
+              "index": {
+                "type": "string",
+                "description": "Optional splunk index passed in the record bodies"
+              },
+              "vault_config_id": {
+                "type": "string",
+                "description": "The vault config used to store the HEC token"
+              },
+              "vault_secret_id": {
+                "type": "string",
+                "description": "The secret ID where the HEC token is stored in vault"
+              }
+            },
+            "dependentRequired": {
+              "channel_id": ["ack_url"],
+              "ack_url": ["channel_id"]
+            }
+          }
+        ],
+        "$id": "https://pangea.cloud/docs/openapi/audit_openapi.json#/components/schemas/ForwardingConfiguration"
+      }
+    },
+    "securitySchemes": {
+      "APIToken": {
+        "type": "http",
+        "bearerFormat": "token",
+        "description": "Pangea API Token",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema"
+}
