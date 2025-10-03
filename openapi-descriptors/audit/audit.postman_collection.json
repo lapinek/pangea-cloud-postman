@@ -1,0 +1,1227 @@
+{
+	"info": {
+		"_postman_id": "f7b0362d-7705-4529-9fb9-b7e03b4a4b27",
+		"name": "audit",
+		"description": "# Secure Audit Log\n\nA secure audit log is a record of events or actions that are stored in a tamper-proof manner to ensure the integrity and accuracy of the information. It is a critical component of any system that requires accountability and transparency. A secure audit log can be used to detect security breaches, unauthorized access, or other malicious activities within a system. By providing a complete and accurate record of all system events, a secure audit log can help organizations maintain compliance with legal and regulatory requirements, as well as improve their overall security posture.\n\n## Pangea Secure Audit Log[​](https://pangea.cloud/docs/audit/overview/about#pangea-secure-audit-log)\n\nPangea Secure Audit Log is a fully managed service that provides builders transparent, immutable, and cryptographically verifiable tamperproof audit logging capabilities easily integrated into any app.\n\n### About Audit Log[​](https://pangea.cloud/docs/audit/overview/about#about-audit-log)\n\nAudit logs are used to record activity that occurs within an application. Audit log events are focused on answering the question, \"who did what when?\" Audit log data is often voluminous with long data retention periods, requiring significant infrastructure to store and recall events. Typically, audit log use cases fall into one of three categories:\n\n- Something went wrong\n    - In this case, a configuration change was made in an application causing it to behave in an undesirable manner. Audit logs can help an admin team look for changes that correspond with the time the problem started occurring and then reverse those changes once identified. Typically, these logs do not carry long-term retention requirements.\n- Data is missing\n    - In situations where vital customer data is missing, Audit Log data can be used to provide quick answers about when the data was deleted and by whom. These logs require longer retention periods and more advanced search capabilities due to the unknown nature of the events prompting the review.\n- Compliance\n    - In most cases, this is usually what's driving application developers to build audit logging capabilities. Compliance frameworks require that specific activity within an application be recorded and stored for very long periods (1-10+ years). Building an audit logging framework for this kind of long-term data retention requirement can be very challenging and distracts from the work that developers need to focus on to bring their product to market. However, this work is essential because without it the product being built may not be marketable to the intended audience.\n\nNow, Pangea Secure Audit Log provides a solution for each of these use cases. Developers can store and search records, define retention periods, and even configure redaction rules to prevent the unnecessary proliferation of sensitive data. Developers can offload the burden of developing the infrastructure and security policies and capabilities needed to protect and scale the backend for their requirements.\n\n## Use Pangea Secure Audit Log[​](https://pangea.cloud/docs/audit/overview/about#use-pangea-secure-audit-log)\n\nThe Secure Audit Log Service takes the burden of logging infrastructure off of builders and replaces it with simple API endpoints for recording and searching events.\n\n### Key capabilities[​](https://pangea.cloud/docs/audit/overview/about#key-capabilities)\n\nPangea's Secure Audit Log provides key capabilities that help builders meet their logging needs:\n\n- Tamperproof by design: Prove to your customers that their audit logs are secure and have never been altered.\n- Configurable Retention Periods: Configure how long to retain your logs in audit settings, and the infrastructure will scale automatically to meet those requirements.\n- Integrated Log Redaction: Prevent unintentional leakage of sensitive information in your logs. Pangea Secure Audit Log has direct integration into Pangea's Redact service.\n- Scalable Searching: The Secure Audit Log [/search](https://pangea.cloud/docs/api/audit#/v1/search) endpoint makes searching even huge amounts of retained log data performant.\n- SDK for fast integration: Pangea's SDK is written in multiple languages to make integrating Secure Audit Log into your application fast and efficient.\n- [Multiple configurations](https://pangea.cloud/docs/getting-started/configure-services/audit#use-the-multiple-configuration-settings) for advanced logging and auditing capabilities.\n    \n\nPangea has based Secure Audit Log on years of experience building compliant enterprise applications. The service ensures that builders have what they need to build provably secure and compliant audit logging capabilities without reinventing the wheel.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31818200",
+		"_collection_link": "https://www.postman.com/pangeacyber/workspace/pangea/collection/33222932-f7b0362d-7705-4529-9fb9-b7e03b4a4b27?action=share&source=collection_link&creator=31818200"
+	},
+	"item": [
+		{
+			"name": "Log an entry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"event\": {\n    \"message\": \"<string>\",\n    \"actor\": \"<string>\",\n    \"action\": \"<string>\",\n    \"new\": \"<string>\",\n    \"old\": \"<string>\",\n    \"source\": \"<string>\",\n    \"status\": \"<string>\",\n    \"target\": \"<string>\",\n    \"tenant_id\": \"<string>\",\n    \"timestamp\": \"<dateTime>\"\n  },\n  \"config_id\": \"<string>\",\n  \"prev_root\": \"x5zu324kuu1uy6faa483xnnqat6f3917xglnwf7p3p4bk8l6sm2s800zq6upgdt5\",\n  \"public_key\": \"<string>\",\n  \"signature\": \"<string>\",\n  \"verbose\": false\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/log",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"log"
+					]
+				},
+				"description": "Create a log entry in the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "Record has been persisted successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event\": {\n    \"message\": \"<string>\",\n    \"actor\": \"<string>\",\n    \"action\": \"<string>\",\n    \"new\": \"<string>\",\n    \"old\": \"<string>\",\n    \"source\": \"<string>\",\n    \"status\": \"<string>\",\n    \"target\": \"<string>\",\n    \"tenant_id\": \"<string>\",\n    \"timestamp\": \"<dateTime>\"\n  },\n  \"config_id\": \"<string>\",\n  \"prev_root\": \"x5zu324kuu1uy6faa483xnnqat6f3917xglnwf7p3p4bk8l6sm2s800zq6upgdt5\",\n  \"public_key\": \"<string>\",\n  \"signature\": \"<string>\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://audit.{{basePangeaUri}}/v1/log",
+							"protocol": "https",
+							"host": [
+								"audit",
+								"{{basePangeaUri}}"
+							],
+							"path": [
+								"v1",
+								"log"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {\n    \"envelope\": {},\n    \"hash\": \"<string>\",\n    \"unpublished_root\": \"otjylqt31obntqr8nfj53uoyicx3lkn6m2s8o14gs2hi2torozj4p6rvy55dmlas\",\n    \"membership_proof\": \"<string>\",\n    \"consistency_proof\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  }\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event\": {\n    \"message\": \"<string>\",\n    \"actor\": \"<string>\",\n    \"action\": \"<string>\",\n    \"new\": \"<string>\",\n    \"old\": \"<string>\",\n    \"source\": \"<string>\",\n    \"status\": \"<string>\",\n    \"target\": \"<string>\",\n    \"tenant_id\": \"<string>\",\n    \"timestamp\": \"<dateTime>\"\n  },\n  \"config_id\": \"<string>\",\n  \"prev_root\": \"x5zu324kuu1uy6faa483xnnqat6f3917xglnwf7p3p4bk8l6sm2s800zq6upgdt5\",\n  \"public_key\": \"<string>\",\n  \"signature\": \"<string>\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"log"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Log streaming endpoint",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/log_stream",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"log_stream"
+					]
+				},
+				"description": "This API allows 3rd party vendors (like Auth0) to stream events to this endpoint where the structure of the payload varies across different vendors. Please refer to examples in SDKs to test this functionality and refer to the documentation (Streaming events to Pangea Audit service)."
+			},
+			"response": [
+				{
+					"name": "No description provided",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/log_stream",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"log_stream"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/log_stream",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"log_stream"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Search the log",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"<string>\",\n  \"config_id\": \"<string>\",\n  \"end\": \"72hours\",\n  \"max_results\": \"<integer>\",\n  \"verbose\": true,\n  \"limit\": \"<integer>\",\n  \"order\": \"asc\",\n  \"order_by\": \"status\",\n  \"search_restriction\": {\n    \"actor\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"action\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"source\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"status\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"target\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"tenant_id\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"start\": \"3756744secs\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/search",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"search"
+					]
+				},
+				"description": "Search the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "Search has completed successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"query\": \"<string>\",\n  \"config_id\": \"<string>\",\n  \"end\": \"72hours\",\n  \"max_results\": \"<integer>\",\n  \"verbose\": true,\n  \"limit\": \"<integer>\",\n  \"order\": \"asc\",\n  \"order_by\": \"status\",\n  \"search_restriction\": {\n    \"actor\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"action\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"source\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"status\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"target\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"tenant_id\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"start\": \"3756744secs\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"search"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {\n    \"count\": \"<integer>\",\n    \"events\": [\n      {\n        \"envelope\": {\n          \"event\": {\n            \"message\": \"<string>\",\n            \"actor\": \"<string>\",\n            \"action\": \"<string>\",\n            \"new\": \"<string>\",\n            \"old\": \"<string>\",\n            \"source\": \"<string>\",\n            \"status\": \"<string>\",\n            \"target\": \"<string>\",\n            \"tenant_id\": \"<string>\",\n            \"timestamp\": \"<dateTime>\"\n          },\n          \"err\": [\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            },\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            }\n          ],\n          \"received_at\": \"<dateTime>\",\n          \"signature\": \"<string>\",\n          \"public_key\": \"<string>\"\n        },\n        \"membership_proof\": \"<string>\",\n        \"hash\": \"<string>\",\n        \"published\": \"<boolean>\",\n        \"leaf_index\": \"<integer>\",\n        \"valid_signature\": \"<boolean>\"\n      },\n      {\n        \"envelope\": {\n          \"event\": {\n            \"message\": \"<string>\",\n            \"actor\": \"<string>\",\n            \"action\": \"<string>\",\n            \"new\": \"<string>\",\n            \"old\": \"<string>\",\n            \"source\": \"<string>\",\n            \"status\": \"<string>\",\n            \"target\": \"<string>\",\n            \"tenant_id\": \"<string>\",\n            \"timestamp\": \"<dateTime>\"\n          },\n          \"err\": [\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            },\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            }\n          ],\n          \"received_at\": \"<dateTime>\",\n          \"signature\": \"<string>\",\n          \"public_key\": \"<string>\"\n        },\n        \"membership_proof\": \"<string>\",\n        \"hash\": \"<string>\",\n        \"published\": \"<boolean>\",\n        \"leaf_index\": \"<integer>\",\n        \"valid_signature\": \"<boolean>\"\n      }\n    ],\n    \"expires_at\": \"<dateTime>\",\n    \"id\": \"<string>\",\n    \"root\": {\n      \"size\": \"<integer>\",\n      \"root_hash\": \"<string>\",\n      \"published_at\": \"<dateTime>\",\n      \"url\": \"<uri>\",\n      \"tree_name\": \"<string>\",\n      \"consistency_proof\": \"<string>\"\n    },\n    \"unpublished_root\": {\n      \"size\": \"<integer>\",\n      \"root_hash\": \"<string>\",\n      \"tree_name\": \"<string>\",\n      \"consistency_proof\": \"<string>\"\n    }\n  }\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"query\": \"<string>\",\n  \"config_id\": \"<string>\",\n  \"end\": \"72hours\",\n  \"max_results\": \"<integer>\",\n  \"verbose\": true,\n  \"limit\": \"<integer>\",\n  \"order\": \"asc\",\n  \"order_by\": \"status\",\n  \"search_restriction\": {\n    \"actor\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"action\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"source\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"status\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"target\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"tenant_id\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"start\": \"3756744secs\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"search"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Search results",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"<string>\",\n  \"assert_search_restriction\": {},\n  \"config_id\": \"<string>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/results",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"results"
+					]
+				},
+				"description": "Page through results from a previous search."
+			},
+			"response": [
+				{
+					"name": "Search results have been provided successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"<string>\",\n  \"assert_search_restriction\": {},\n  \"config_id\": \"<string>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"results"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {\n    \"count\": \"<integer>\",\n    \"events\": [\n      {\n        \"envelope\": {\n          \"event\": {\n            \"message\": \"<string>\",\n            \"actor\": \"<string>\",\n            \"action\": \"<string>\",\n            \"new\": \"<string>\",\n            \"old\": \"<string>\",\n            \"source\": \"<string>\",\n            \"status\": \"<string>\",\n            \"target\": \"<string>\",\n            \"tenant_id\": \"<string>\",\n            \"timestamp\": \"<dateTime>\"\n          },\n          \"err\": [\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            },\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            }\n          ],\n          \"received_at\": \"<dateTime>\",\n          \"signature\": \"<string>\",\n          \"public_key\": \"<string>\"\n        },\n        \"membership_proof\": \"<string>\",\n        \"hash\": \"<string>\",\n        \"published\": \"<boolean>\",\n        \"leaf_index\": \"<integer>\",\n        \"valid_signature\": \"<boolean>\"\n      },\n      {\n        \"envelope\": {\n          \"event\": {\n            \"message\": \"<string>\",\n            \"actor\": \"<string>\",\n            \"action\": \"<string>\",\n            \"new\": \"<string>\",\n            \"old\": \"<string>\",\n            \"source\": \"<string>\",\n            \"status\": \"<string>\",\n            \"target\": \"<string>\",\n            \"tenant_id\": \"<string>\",\n            \"timestamp\": \"<dateTime>\"\n          },\n          \"err\": [\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            },\n            {\n              \"error\": \"<string>\",\n              \"field\": \"<string>\",\n              \"value\": {\n                \"description\": \"The original JSON value (may be truncated.)\"\n              }\n            }\n          ],\n          \"received_at\": \"<dateTime>\",\n          \"signature\": \"<string>\",\n          \"public_key\": \"<string>\"\n        },\n        \"membership_proof\": \"<string>\",\n        \"hash\": \"<string>\",\n        \"published\": \"<boolean>\",\n        \"leaf_index\": \"<integer>\",\n        \"valid_signature\": \"<boolean>\"\n      }\n    ],\n    \"root\": {\n      \"size\": \"<integer>\",\n      \"root_hash\": \"<string>\",\n      \"published_at\": \"<dateTime>\",\n      \"url\": \"<uri>\",\n      \"tree_name\": \"<string>\",\n      \"consistency_proof\": \"<string>\"\n    },\n    \"unpublished_root\": {\n      \"size\": \"<integer>\",\n      \"root_hash\": \"<string>\",\n      \"tree_name\": \"<string>\",\n      \"consistency_proof\": \"<string>\"\n    }\n  }\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"<string>\",\n  \"assert_search_restriction\": {},\n  \"config_id\": \"<string>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"results"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Tamperproof Verification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"config_id\": \"<string>\",\n  \"tree_size\": \"<integer>\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/root",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"root"
+					]
+				},
+				"description": "Return current root hash and consistency proof."
+			},
+			"response": [
+				{
+					"name": "The requested root was returned.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"config_id\": \"<string>\",\n  \"tree_size\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/root",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"root"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {\n    \"size\": \"<integer>\",\n    \"root_hash\": \"<string>\",\n    \"published_at\": \"<dateTime>\",\n    \"url\": \"<uri>\",\n    \"tree_name\": \"<string>\",\n    \"consistency_proof\": \"<string>\"\n  }\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"config_id\": \"<string>\",\n  \"tree_size\": \"<integer>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/root",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"root"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Log multiple entries",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"<string>\",\n        \"actor\": \"<string>\",\n        \"action\": \"<string>\",\n        \"new\": \"<string>\",\n        \"old\": \"<string>\",\n        \"source\": \"<string>\",\n        \"status\": \"<string>\",\n        \"target\": \"<string>\",\n        \"tenant_id\": \"<string>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      \"public_key\": \"<string>\",\n      \"signature\": \"<string>\"\n    }\n  ],\n  \"config_id\": \"<string>\",\n  \"verbose\": false\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v2/log",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"log"
+					]
+				},
+				"description": "Create multiple log entries in the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "No description provided",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"<string>\",\n        \"actor\": \"<string>\",\n        \"action\": \"<string>\",\n        \"new\": \"<string>\",\n        \"old\": \"<string>\",\n        \"source\": \"<string>\",\n        \"status\": \"<string>\",\n        \"target\": \"<string>\",\n        \"tenant_id\": \"<string>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      \"public_key\": \"<string>\",\n      \"signature\": \"<string>\"\n    }\n  ],\n  \"config_id\": \"<string>\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {\n    \"results\": [\n      {\n        \"envelope\": {},\n        \"hash\": \"<string>\",\n        \"unpublished_root\": \"li5j5h6j4c9ktvlr9jxbvwdgjh94sh34ut8vo8ekithec6rt0h73o9me7gc2rtxz\",\n        \"membership_proof\": \"<string>\",\n        \"consistency_proof\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"envelope\": {},\n        \"hash\": \"<string>\",\n        \"unpublished_root\": \"dxck64ig85ifumxh1tgh28cw6hnao82sil7ddb5rugp6rv7yojcqeve9mvvab12r\",\n        \"membership_proof\": \"<string>\",\n        \"consistency_proof\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  }\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"<string>\",\n        \"actor\": \"<string>\",\n        \"action\": \"<string>\",\n        \"new\": \"<string>\",\n        \"old\": \"<string>\",\n        \"source\": \"<string>\",\n        \"status\": \"<string>\",\n        \"target\": \"<string>\",\n        \"tenant_id\": \"<string>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      \"public_key\": \"<string>\",\n      \"signature\": \"<string>\"\n    }\n  ],\n  \"config_id\": \"<string>\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Log multiple entries asynchronously",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"<string>\",\n        \"actor\": \"<string>\",\n        \"action\": \"<string>\",\n        \"new\": \"<string>\",\n        \"old\": \"<string>\",\n        \"source\": \"<string>\",\n        \"status\": \"<string>\",\n        \"target\": \"<string>\",\n        \"tenant_id\": \"<string>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      \"public_key\": \"<string>\",\n      \"signature\": \"<string>\"\n    }\n  ],\n  \"config_id\": \"<string>\",\n  \"verbose\": false\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v2/log_async",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"log_async"
+					]
+				},
+				"description": "Asynchronously create multiple log entries in the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "Record is accepted and being processed.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"<string>\",\n        \"actor\": \"<string>\",\n        \"action\": \"<string>\",\n        \"new\": \"<string>\",\n        \"old\": \"<string>\",\n        \"source\": \"<string>\",\n        \"status\": \"<string>\",\n        \"target\": \"<string>\",\n        \"tenant_id\": \"<string>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      \"public_key\": \"<string>\",\n      \"signature\": \"<string>\"\n    }\n  ],\n  \"config_id\": \"<string>\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log_async",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log_async"
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {\n    \"ttl_mins\": \"<integer>\",\n    \"retry_counter\": \"<integer>\",\n    \"location\": \"<string>\"\n  }\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"<string>\",\n        \"actor\": \"<string>\",\n        \"action\": \"<string>\",\n        \"new\": \"<string>\",\n        \"old\": \"<string>\",\n        \"source\": \"<string>\",\n        \"status\": \"<string>\",\n        \"target\": \"<string>\",\n        \"tenant_id\": \"<string>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      \"public_key\": \"<string>\",\n      \"signature\": \"<string>\"\n    }\n  ],\n  \"config_id\": \"<string>\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log_async",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log_async"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Export from the audit log",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"config_id\": \"<string>\",\n  \"end\": \"07513639minutes\",\n  \"verbose\": true,\n  \"order\": \"asc\",\n  \"order_by\": \"timestamp\",\n  \"start\": \"6791508mins\",\n  \"format\": \"csv\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/export",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"export"
+					]
+				},
+				"description": "Bulk export of data from the Secure Audit Log, with optional filtering."
+			},
+			"response": [
+				{
+					"name": "Export has completed successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"config_id\": \"<string>\",\n  \"end\": \"07513639minutes\",\n  \"verbose\": true,\n  \"order\": \"asc\",\n  \"order_by\": \"timestamp\",\n  \"start\": \"6791508mins\",\n  \"format\": \"csv\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/export",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"export"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"config_id\": \"<string>\",\n  \"end\": \"07513639minutes\",\n  \"verbose\": true,\n  \"order\": \"asc\",\n  \"order_by\": \"timestamp\",\n  \"start\": \"6791508mins\",\n  \"format\": \"csv\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/export",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"export"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		},
+		{
+			"name": "Download search results",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"result_id\": false\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/download_results",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"download_results"
+					]
+				},
+				"description": "Get all search results as a compressed (gzip) CSV file."
+			},
+			"response": [
+				{
+					"name": "Results retrieved successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"result_id\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/download_results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"download_results"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {\n    \"dest_url\": \"<string>\",\n    \"expires_at\": \"<dateTime>\"\n  }\n}"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"result_id\": false\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/download_results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"download_results"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"request_id\": \"<string>\",\n  \"request_time\": \"<string>\",\n  \"response_time\": \"<string>\",\n  \"status\": \"<string>\",\n  \"summary\": \"<string>\",\n  \"result\": {}\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auditToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://audit.{{basePangeaUri}}"
+		}
+	]
+}

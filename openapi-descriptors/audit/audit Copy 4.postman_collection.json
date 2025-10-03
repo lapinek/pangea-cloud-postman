@@ -1,0 +1,994 @@
+{
+	"info": {
+		"_postman_id": "86858d40-418b-4612-9fd8-68ab3825c83d",
+		"name": "audit Copy 4",
+		"description": "Tamperproof audit trail",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31818200"
+	},
+	"item": [
+		{
+			"name": "Log an entry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/log",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"log"
+					]
+				},
+				"description": "Create a log entry in the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "Record has been persisted successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"log"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"log"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Log streaming endpoint",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/log_stream",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"log_stream"
+					]
+				},
+				"description": "This API allows third-party vendors like Auth0 to stream log events to this endpoint. The payload structure may vary across different vendors. Please refer to examples in the [SDKs](/docs/sdk) to test this functionality and consult the [Log Streaming](/docs/audit/log-streaming) documentation for details."
+			},
+			"response": [
+				{
+					"name": "No description provided",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/log_stream",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"log_stream"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/log_stream",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"log_stream"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Search the log",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"actor:\\\"Jane Doe\\\" target:cosmos\",\n  \"config_id\": \"dolor esse\",\n  \"end\": {\n    \"value\": \"reference https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel not found in the OpenAPI spec\"\n  },\n  \"max_results\": 5067,\n  \"verbose\": true,\n  \"limit\": -47061954,\n  \"order\": \"asc\",\n  \"order_by\": \"received_at\",\n  \"search_restriction\": {\n    \"actor\": [\n      \"esse ex Excepteur laborum\",\n      \"quis enim\"\n    ],\n    \"action\": [\n      \"minim\",\n      \"aliquip eu laborum\"\n    ],\n    \"source\": [\n      \"in\",\n      \"nisi aute\"\n    ],\n    \"status\": [\n      \"mollit voluptate enim\",\n      \"officia amet incididunt in\"\n    ],\n    \"target\": [\n      \"mollit elit ipsum id\",\n      \"qui Excepteur eu laboris\"\n    ],\n    \"tenant_id\": [\n      \"consectetur anim ad sunt\",\n      \"pariatur\"\n    ]\n  },\n  \"start\": {\n    \"value\": \"reference https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel not found in the OpenAPI spec\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/search",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"search"
+					]
+				},
+				"description": "Search the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "Search has completed successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"query\": \"actor:\\\"Jane Doe\\\" target:cosmos\",\n  \"config_id\": \"sunt ullamco\",\n  \"end\": {\n    \"value\": \"reference https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel not found in the OpenAPI spec\"\n  },\n  \"max_results\": 348,\n  \"verbose\": true,\n  \"limit\": 19744376,\n  \"order\": \"desc\",\n  \"order_by\": \"status\",\n  \"search_restriction\": {\n    \"actor\": [\n      \"dolore ad\",\n      \"qui nostrud nulla\"\n    ],\n    \"action\": [\n      \"nulla aliquip esse\",\n      \"Ut ad\"\n    ],\n    \"source\": [\n      \"laborum culpa enim\",\n      \"proident id\"\n    ],\n    \"status\": [\n      \"cupidatat ipsum irure ut eu\",\n      \"ex Excepteur sed ad veniam\"\n    ],\n    \"target\": [\n      \"tempor\",\n      \"eiusmod occae\"\n    ],\n    \"tenant_id\": [\n      \"veniam dolor irure occaecat\",\n      \"ad velit irure nostrud\"\n    ]\n  },\n  \"start\": {\n    \"value\": \"reference https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel not found in the OpenAPI spec\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"search"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"query\": \"actor:\\\"Jane Doe\\\" target:cosmos\",\n  \"config_id\": \"sunt ullamco\",\n  \"end\": {\n    \"value\": \"reference https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel not found in the OpenAPI spec\"\n  },\n  \"max_results\": 348,\n  \"verbose\": true,\n  \"limit\": 19744376,\n  \"order\": \"desc\",\n  \"order_by\": \"status\",\n  \"search_restriction\": {\n    \"actor\": [\n      \"dolore ad\",\n      \"qui nostrud nulla\"\n    ],\n    \"action\": [\n      \"nulla aliquip esse\",\n      \"Ut ad\"\n    ],\n    \"source\": [\n      \"laborum culpa enim\",\n      \"proident id\"\n    ],\n    \"status\": [\n      \"cupidatat ipsum irure ut eu\",\n      \"ex Excepteur sed ad veniam\"\n    ],\n    \"target\": [\n      \"tempor\",\n      \"eiusmod occae\"\n    ],\n    \"tenant_id\": [\n      \"veniam dolor irure occaecat\",\n      \"ad velit irure nostrud\"\n    ]\n  },\n  \"start\": {\n    \"value\": \"reference https://audit.aws.us.pangea.cloud/v1/openapi.json#/components/schemas/DateTimeRel not found in the OpenAPI spec\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/search",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"search"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Search results",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"qu\",\n  \"assert_search_restriction\": {},\n  \"config_id\": \"ut culpa laborum eu dolore\",\n  \"limit\": 82171578,\n  \"offset\": 66287628\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/results",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"results"
+					]
+				},
+				"description": "Page through results from a previous search."
+			},
+			"response": [
+				{
+					"name": "Search results have been provided successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"qu\",\n  \"assert_search_restriction\": {},\n  \"config_id\": \"ut culpa laborum eu dolore\",\n  \"limit\": 82171578,\n  \"offset\": 66287628\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"results"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"qu\",\n  \"assert_search_restriction\": {},\n  \"config_id\": \"ut culpa laborum eu dolore\",\n  \"limit\": 82171578,\n  \"offset\": 66287628\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"results"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Tamperproof Verification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"config_id\": \"magna laborum\",\n  \"tree_size\": 94278733\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/root",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"root"
+					]
+				},
+				"description": "Return current root hash and consistency proof."
+			},
+			"response": [
+				{
+					"name": "The requested root was returned.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"config_id\": \"magna laborum\",\n  \"tree_size\": 94278733\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/root",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"root"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"config_id\": \"magna laborum\",\n  \"tree_size\": 94278733\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/root",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"root"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Log multiple entries",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"hello world\"\n      }\n    }\n  ],\n  \"config_id\": \"culpa dolor\",\n  \"verbose\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v2/log",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"log"
+					]
+				},
+				"description": "Create multiple log entries in the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "No description provided",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"hello world\"\n      }\n    }\n  ],\n  \"config_id\": \"culpa dolor\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"hello world\"\n      }\n    }\n  ],\n  \"config_id\": \"culpa dolor\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Log multiple entries asynchronously",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"hello world\"\n      }\n    }\n  ],\n  \"config_id\": \"id tempor aliqua sint\",\n  \"verbose\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v2/log_async",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"log_async"
+					]
+				},
+				"description": "Asynchronously create multiple log entries in the Secure Audit Log."
+			},
+			"response": [
+				{
+					"name": "Record is accepted and being processed.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"hello world\"\n      }\n    }\n  ],\n  \"config_id\": \"id tempor aliqua sint\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log_async",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log_async"
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"events\": [\n    {\n      \"event\": {\n        \"message\": \"hello world\"\n      }\n    }\n  ],\n  \"config_id\": \"id tempor aliqua sint\",\n  \"verbose\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v2/log_async",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v2",
+								"log_async"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Download search results",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"request_id\": \"prq_sqilrhruwu54uggihqj3aie24wrctakr\",\n  \"config_id\": \"consectetur Excepteur\",\n  \"assert_search_restriction\": {},\n  \"result_id\": \"pas_sqilrhruwu54uggihqj3aie24wrctakr\",\n  \"format\": \"csv\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/download_results",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"download_results"
+					]
+				},
+				"description": "Get all search results as a compressed (gzip) CSV file."
+			},
+			"response": [
+				{
+					"name": "Results retrieved successfully.",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"request_id\": \"prq_sqilrhruwu54uggihqj3aie24wrctakr\",\n  \"config_id\": \"consectetur Excepteur\",\n  \"assert_search_restriction\": {},\n  \"result_id\": \"pas_sqilrhruwu54uggihqj3aie24wrctakr\",\n  \"format\": \"csv\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/download_results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"download_results"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "null"
+				},
+				{
+					"name": "Validation errors",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"request_id\": \"prq_sqilrhruwu54uggihqj3aie24wrctakr\",\n  \"config_id\": \"consectetur Excepteur\",\n  \"assert_search_restriction\": {},\n  \"result_id\": \"pas_sqilrhruwu54uggihqj3aie24wrctakr\",\n  \"format\": \"csv\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/download_results",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"download_results"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://audit.aws.us.pangea.cloud",
+			"type": "string"
+		}
+	]
+}
